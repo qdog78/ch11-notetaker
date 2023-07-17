@@ -24,9 +24,9 @@ app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-//API Routes
+// API Routes
 // Get Route
-app.get("/api/notes", async(req, res) => {
+app.get("/api/notes", async (req, res) => {
   // Logic to retrieve existing notes
   // ...
 
@@ -37,25 +37,39 @@ app.get("/api/notes", async(req, res) => {
   ];
 
   const notesData = await fs.readFile("./db/db.json");
-  const notes = JSON.parse (notesData)
-  console.log (notes)
-  //console.log(notesData);
+  const notes = JSON.parse(notesData);
+  console.log(notes);
 
   // Send the existing notes as the response
   res.json(notes);
-
-
 });
+
 // Post Route
-app.post("/api/notes", (req, res) => {
+app.post("/api/notes", async (req, res) => {
   // Retrieve the new note data from the request body
   const newNote = req.body;
 
-  // Logic to save the new note
-  // ...
+  try {
+    // Read the existing notes from the db.json file
+    const notesData = await fs.readFile("./db/db.json");
+    const notes = JSON.parse(notesData);
 
-  // Example response with success message
-  res.json({ message: "Note saved successfully" });
+    // Assign a unique ID to the new note
+    newNote.id = notes.length + 1;
+
+    // Add the new note to the existing notes
+    notes.push(newNote);
+
+    // Write the updated notes back to the db.json file
+    await fs.writeFile("./db/db.json", JSON.stringify(notes));
+
+    // Respond with success message
+    res.json({ message: "Note saved successfully" });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error("Error saving note:", error);
+    res.status(500).json({ message: "Failed to save note" });
+  }
 });
 
 // Delete Route
