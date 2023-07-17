@@ -1,5 +1,9 @@
 # ch11-notetaker
 
-This application was supposed to be able to create notes and store them. The application was supposed to be able to run through Heroku, with number tutors and attempts I failed to get this application up and running. I the future I wish to return to this assignment and complete it. 
+My application is now adding notes but it does not delete notes at this time.
+
+My biggest challenge was being able to run the code and getting my notes to fall inside of the db.json file.
+
+I went to office hours and my instructors were able to help me fix these issues.
 
 ##Quinten Johnson
